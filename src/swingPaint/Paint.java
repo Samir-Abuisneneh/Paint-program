@@ -15,7 +15,7 @@ public class Paint extends JPanel {
     static String shapeState = "Line";
     static String colorState = "#000000";
     static Vector<Coordinates> shapes = new Vector<>();
-    JButton lineBtn, rectBtn, circleBtn,undoBtn,clearBtn, redBtn,blueBtn,blackBtn;
+    JButton lineBtn, rectBtn, ovalBtn,undoBtn,clearBtn, redBtn,blueBtn,blackBtn;
 
     public static void main(String[] args) {
         new Paint().init();
@@ -23,7 +23,9 @@ public class Paint extends JPanel {
 
     ActionListener shapeAction = e -> {
         shapeState = e.getActionCommand();
-        repaint();
+    };
+    ActionListener colorAction = e -> {
+        colorState = e.getActionCommand();
     };
     ActionListener clearAction = e -> {
         if (e.getActionCommand().equals("Clear"))
@@ -40,13 +42,8 @@ public class Paint extends JPanel {
         } catch (AWTException ex) {
             throw new RuntimeException(ex);
         }
-        repaint();
-
     };
 
-    ActionListener colorAction = e -> {
-        colorState = e.getActionCommand();
-    };
 
 
     public void init(){
@@ -61,9 +58,9 @@ public class Paint extends JPanel {
         rectBtn.addActionListener(shapeAction);
         shape.add(rectBtn);
 
-        circleBtn = new JButton("Circle");
-        circleBtn.addActionListener(shapeAction);
-        shape.add(circleBtn);
+        ovalBtn = new JButton("Oval");
+        ovalBtn.addActionListener(shapeAction);
+        shape.add(ovalBtn);
 
         clearBtn = new JButton("Clear");
         clearBtn.addActionListener(clearAction);
@@ -121,7 +118,7 @@ public class Paint extends JPanel {
         this.y2 = (y);
     }
 
-    public void drawPerfectRect(Graphics g, int x, int y, int x2, int y2) {
+    public void drawRect(Graphics g, int x, int y, int x2, int y2) {
         int px = Math.min(x,x2);
         int py = Math.min(y,y2);
         int pw=Math.abs(x-x2);
@@ -129,7 +126,7 @@ public class Paint extends JPanel {
         g.drawRect(px, py, pw, ph);
     }
 
-    public void drawCircle (Graphics g, int x, int y, int x2, int y2){
+    public void drawOval (Graphics g, int x, int y, int x2, int y2){
         int width = x2 - x;
         int height = y2 - y;
         int xTemp = x;
@@ -172,10 +169,10 @@ public class Paint extends JPanel {
                         g.drawLine(shape.x, shape.y, shape.x2, shape.y2);
                         break;
                     case "Rectangle":
-                        drawPerfectRect(g, shape.x, shape.y, shape.x2, shape.y2);
+                        drawRect(g, shape.x, shape.y, shape.x2, shape.y2);
                         break;
-                    case "Circle":
-                        drawCircle(g, shape.x, shape.y, shape.x2, shape.y2);
+                    case "Oval":
+                        drawOval(g, shape.x, shape.y, shape.x2, shape.y2);
                         break;
                 }
             }
@@ -185,10 +182,10 @@ public class Paint extends JPanel {
                 g.drawLine(x, y, x2, y2);
                 break;
             case "Rectangle":
-                drawPerfectRect(g, x, y, x2, y2);
+                drawRect(g, x, y, x2, y2);
                 break;
-            case "Circle":
-                drawCircle(g, x, y, x2, y2);
+            case "Oval":
+                drawOval(g, x, y, x2, y2);
                 break;
             default:
         }
